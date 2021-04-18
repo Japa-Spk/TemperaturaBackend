@@ -1,5 +1,5 @@
 package Controller;
-
+import firestore.FireStoreConfig;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -32,8 +32,6 @@ public class Controlador {
 	    return listaPaises;
 	    
 	    
-//		PaisDAO paisDAO = new PaisDAO();
-//		return paisDAO.obtenerPaises();
 	}
 	
 	
@@ -49,48 +47,43 @@ public class Controlador {
 	    c1.setPais(p1);
 	    c1.setNombre("Bogota");
 	    c1.setDescripcion("Capital y ciudad mas grande de colombia, tiene alrededor de 8 millones de habitantes.");
+	    c1.setRegistros(Registros());
 	    
 	    Ciudade c2 = new Ciudade();
 	    c2.setId(3);
 	    c2.setPais(p1);
 	    c2.setNombre("Medellin");
 	    c2.setDescripcion("Medellín está ubicada en el noroccidente de Colombia sobre la coordillera central con una altitud media de 1495 m.s.n.m. Ubicada en el Valle del Aburrá, está rodeada de montañas y es conocida como la “Ciudad de la eterna primavera” por su clima que, durante todo el año, promedia los 24°C.");
-		
-	    
-//	    List<Registro> listaRegc1 = new ArrayList<>();
-//	    Registro r1 = new Registro();
-//	    r1.setId(1);
-//	    r1.setCiudade(c1);
-//	    r1.setHora("9:00 AM");
-//	    r1.setFecha(new Date());
-//	    r1.setHumedad(22);
-//	    r1.setTemperatura(28);
-//	    listaRegc1.add(r1);
-//	    
-//	    List<Registro> listaRegc2 = new ArrayList<>();
-//	    Registro r2 = new Registro();
-//	    r2.setId(2);
-//	    r2.setCiudade(c2);
-//	    r2.setHora("4:00 PM");
-//	    r2.setFecha(new Date());
-//	    r2.setHumedad(46);
-//	    r2.setTemperatura(11);
-//	    listaRegc2.add(r2);
-//	    
-//	    c1.setRegistros(listaRegc1);
-//	    c2.setRegistros(listaRegc2);
+	    c2.setRegistros(Registros());
 	    
 	    listaCiudades.add(c1);
 	    listaCiudades.add(c2);
 	  
 	    return listaCiudades;
 	    
-	    
-//		CiudadDAO ciudadDAO = new CiudadDAO();
-//		return ciudadDAO.obtenerCiudades();
 	}
 	
-	
+	public static List<Registro> Registros() {
+		List<Registro> listaRegistros = new ArrayList<>();
+	    Registro r1 = new Registro();
+	    r1.setId(1);
+	    r1.setTemperatura(33);
+	    r1.setHumedad(60);
+	    r1.setFecha(new Date());
+	    r1.setHora("10:20 AM");
+	    Registro r2 = new Registro();
+	    r2.setId(2);
+	    r2.setTemperatura(33);
+	    r2.setHumedad(60);
+	    r2.setFecha(new Date());
+	    r2.setHora("10:59 AM");
+	    listaRegistros.add(r1);
+	    listaRegistros.add(r2);
+	    
+	    return listaRegistros;	    
+	    
+	}
+
 	
 	
 	

@@ -48,6 +48,34 @@ public class ControladorService {
 		String json = new Gson().toJson(Controlador.Ciudades());
 		return json;
 	}
+	
+	
+	@POST
+	@Path("/prueba/registros")
+	@Produces("application/json")
+	public String Registros() {
+		String json = new Gson().toJson(Controlador.Registros());
+		return json;
+	}
+	
+	
+	
+	
+	@POST
+	@Path("/paises")
+	@Produces("application/json")
+	public String FPaises() throws Exception {
+		String json = new Gson().toJson(ControladorFirebase.getPaises());
+		return json;
+	}
+	
+	@POST
+	@Path("/ciudades")
+	@Produces("application/json")
+	public String FCiudades() throws Exception {
+		String json = new Gson().toJson(ControladorFirebase.getCiudades());
+		return json;
+	}
 
 	
 }
