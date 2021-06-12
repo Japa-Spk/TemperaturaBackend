@@ -22,6 +22,8 @@ public class Ciudade implements Serializable {
 	private String descripcion;
 
 	private String nombre;
+	
+	private String img;
 
 	//bi-directional many-to-one association to Pais
 	@ManyToOne
@@ -56,6 +58,14 @@ public class Ciudade implements Serializable {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	public String getImg() {
+		return this.img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
 	}
 
 	public Pais getPais() {

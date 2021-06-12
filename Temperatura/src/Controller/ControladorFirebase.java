@@ -5,6 +5,8 @@ import model.Pais;
 import model.Registro;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,7 +35,7 @@ public class ControladorFirebase {
 		db = startConfig.inicializar();
 	}
 	
-	private ApiFuture<WriteResult> crearDocumento(String coleccion, String documento, Map<String, Object> data) {
+	private static ApiFuture<WriteResult> crearDocumento(String coleccion, String documento, Map<String, Object> data) {
 		System.out.println("Crear Registro a coleccion "+coleccion+" con documento "+documento+" con objeto");
 		DocumentReference docRef = db.collection(coleccion).document(documento);
 		ApiFuture<WriteResult> result = docRef.set(data);
@@ -75,14 +77,41 @@ public class ControladorFirebase {
 		crearDocumento("Paises",Nombre, data);
 	}
 	
+	
+	public static  ApiFuture<WriteResult> crearRegistro(Long Id, Date Fecha, String Hora, Integer Humedad, Integer Id_ciudad, Integer Temperatura) {
+		Map<String, Object> data = new HashMap<>();
+		data.put("Id", Id);
+		data.put("Fecha", new Timestamp(Fecha.getTime()));
+		data.put("Hora", Hora);
+		data.put("Humedad", Humedad);
+		data.put("Id_ciudad", Id_ciudad);
+		data.put("Temperatura", Temperatura);
+		return crearDocumento("Registros",Id+"", data);
+	}
+	
+	
 	public static List<Pais> getPaises() throws Exception{
 		List<Pais> listaPaises = new ArrayList<>();
 		List<QueryDocumentSnapshot> ListaPaises =  traerDocumentos("Paises");
+		CollectionReference ciudades = db.collection("Ciudades");
 		for(QueryDocumentSnapshot document: ListaPaises) {
+			List<Ciudade> listaCiudades = new ArrayList<>();
 		    Pais pais = new Pais();
 		    pais.setId(document.getLong("Id").intValue());
 		    pais.setNombre(document.getString("Nombre"));
 		    pais.setDescripcion(document.getString("Descripcion"));
+		    //TRAE CIUDADES DEL PAIS
+			System.out.println("Traer Ciudades de pais");
+		    Query queryC = ciudades.whereEqualTo("Pais_id", document.getLong("Id").intValue());
+		    ApiFuture<QuerySnapshot> queryexeC = ejecQuery(queryC);
+		    for(DocumentSnapshot documentCiudad: queryexeC.get().getDocuments()) {
+		    	System.out.println("Query de Ciudad ID->"+documentCiudad.getLong("Id").intValue());
+		    	Ciudade ciudad = new Ciudade();
+			    ciudad.setId(documentCiudad.getLong("Id").intValue());
+			    ciudad.setNombre(documentCiudad.getString("Nombre"));
+			    listaCiudades.add(ciudad);
+		    }
+		    pais.setCiudades(listaCiudades);
 		    listaPaises.add(pais);
 		}
 		return listaPaises;
@@ -134,6 +163,7 @@ public class ControladorFirebase {
 		    ciudad.setId(document.getLong("Id").intValue());
 		    ciudad.setNombre(document.getString("Nombre"));
 		    ciudad.setDescripcion(document.getString("Descripcion"));
+		    ciudad.setImg(document.getString("Img"));
 		    ciudad.setPais(pais);
 		    ciudad.setRegistros(listaRegistros);
 		    listaCiudades.add(ciudad);
